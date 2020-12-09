@@ -71,9 +71,6 @@ function runCdk(){
 	if [ "${exitCode}" == "0" ]; then
 	  commentStatus="Success"
   else
-    commentStatus="Failed"
-    echo "::error ::CDK Deply Failed"
-	fi
 
 	if [ "$GITHUB_EVENT_NAME" == "pull_request" ] && [ "${INPUT_ACTIONS_COMMENT}" == "true" ]; then
 		commentWrapper="#### \`cdk ${INPUT_CDK_SUBCOMMAND}\` ${commentStatus}
@@ -92,6 +89,10 @@ ${output}
 
 		echo "${payload}" | curl -s -S -H "Authorization: token ${GITHUB_TOKEN}" --header "Content-Type: application/json" --data @- "${commentsURL}" > /dev/null
 	fi
+
+	if [ "${exitCode}" != "0" ]; then
+	  exit ${exitCode}
+  else
 }
 
 function main(){
