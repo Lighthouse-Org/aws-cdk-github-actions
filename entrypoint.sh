@@ -66,6 +66,7 @@ function runCdk(){
 	exitCode=${?}
 	echo ::set-output name=status_code::${exitCode}
 	echo "${output}"
+	echo "Exit Code is ${exitCode}"
 
 	commentStatus="Failed"
 	if [ "${exitCode}" == "0" ]; then
