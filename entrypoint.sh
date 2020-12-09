@@ -68,8 +68,12 @@ function runCdk(){
 	echo "${output}"
 
 	commentStatus="Failed"
-	if [ "${exitCode}" == "0" -o "${exitCode}" == "1" ]; then
-		commentStatus="Success"
+	if [ "${exitCode}" == "0"]
+	then
+	  commentStatus="Success"
+  else
+    commentStatus="Failed"
+    echo ::set-failed
 	fi
 
 	if [ "$GITHUB_EVENT_NAME" == "pull_request" ] && [ "${INPUT_ACTIONS_COMMENT}" == "true" ]; then
