@@ -68,8 +68,7 @@ function runCdk(){
 	echo "${output}"
 
 	commentStatus="Failed"
-	if [ "${exitCode}" == "0"]
-	then
+	if [ "${exitCode}" == "0" ]; then
 	  commentStatus="Success"
   else
     commentStatus="Failed"
