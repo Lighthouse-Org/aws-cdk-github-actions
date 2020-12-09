@@ -72,7 +72,7 @@ function runCdk(){
 	  commentStatus="Success"
   else
     commentStatus="Failed"
-    echo ::set-failed
+    echo "::error ::CDK Deply Failed"
 	fi
 
 	if [ "$GITHUB_EVENT_NAME" == "pull_request" ] && [ "${INPUT_ACTIONS_COMMENT}" == "true" ]; then
