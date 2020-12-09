@@ -70,7 +70,7 @@ function runCdk(){
 	commentStatus="Failed"
 	if [ "${exitCode}" == "0" ]; then
 	  commentStatus="Success"
-  else
+  fi
 
 	if [ "$GITHUB_EVENT_NAME" == "pull_request" ] && [ "${INPUT_ACTIONS_COMMENT}" == "true" ]; then
 		commentWrapper="#### \`cdk ${INPUT_CDK_SUBCOMMAND}\` ${commentStatus}
@@ -90,9 +90,12 @@ ${output}
 		echo "${payload}" | curl -s -S -H "Authorization: token ${GITHUB_TOKEN}" --header "Content-Type: application/json" --data @- "${commentsURL}" > /dev/null
 	fi
 
-	if [ "${exitCode}" != "0" ]; then
+	if [ "${exitCode}" -ne "0" ]; then
+	  echo "CDK Deploy Failed"
 	  exit ${exitCode}
   else
+    echo "CDK Deploy Succeeded"
+  fi
 }
 
 function main(){
