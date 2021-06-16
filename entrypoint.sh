@@ -18,9 +18,9 @@ function installAwsCdk(){
 	echo "Install aws-cdk ${INPUT_CDK_VERSION}"
 	if [ "${INPUT_CDK_VERSION}" == "latest" ]; then
 		if [ "${INPUT_DEBUG_LOG}" == "true" ]; then
-			sudo npm install -g aws-cdk
+			npm install -g aws-cdk
 		else
-			sudo npm install -g aws-cdk >/dev/null 2>&1
+			npm install -g aws-cdk >/dev/null 2>&1
 		fi
 
 		if [ "${?}" -ne 0 ]; then
@@ -30,9 +30,9 @@ function installAwsCdk(){
 		fi
 	else
 		if [ "${INPUT_DEBUG_LOG}" == "true" ]; then
-			sudo npm install -g aws-cdk@${INPUT_CDK_VERSION}
+			npm install -g aws-cdk@${INPUT_CDK_VERSION}
 		else
-			sudo npm install -g aws-cdk@${INPUT_CDK_VERSION} >/dev/null 2>&1
+			npm install -g aws-cdk@${INPUT_CDK_VERSION} >/dev/null 2>&1
 		fi
 
 		if [ "${?}" -ne 0 ]; then
@@ -47,9 +47,9 @@ function installPipRequirements(){
 	if [ -e "requirements.txt" ]; then
 		echo "Install requirements.txt"
 		if [ "${INPUT_DEBUG_LOG}" == "true" ]; then
-			sudo pip install -r requirements.txt
+			pip install -r requirements.txt
 		else
-			sudo pip install -r requirements.txt >/dev/null 2>&1
+			pip install -r requirements.txt >/dev/null 2>&1
 		fi
 
 		if [ "${?}" -ne 0 ]; then
@@ -61,8 +61,8 @@ function installPipRequirements(){
 }
 
 function runCdk(){
-	echo "Run cdk ${INPUT_CDK_SUBCOMMAND} ${*} \"${INPUT_CDK_STACK}\""
-	output=$(sudo cdk ${INPUT_CDK_SUBCOMMAND} ${*} "${INPUT_CDK_STACK}" 2>&1)
+	echo "Run cdk ${INPUT_CDK_SUBCOMMAND}"
+	output=$(cdk ${INPUT_CDK_SUBCOMMAND} 2>&1)
 	exitCode=${?}
 	echo ::set-output name=status_code::${exitCode}
 	echo "${output}"
@@ -108,6 +108,9 @@ function main(){
 	installTypescript
 	installAwsCdk
 	installPipRequirements
+	echo `whoami`
+	mkdir /github/workspace/cdk-deploy/cdk.out/
+	chmod 777 /github/workspace/cdk-deploy/cdk.out/
 	runCdk ${INPUT_CDK_ARGS}
 }
 
