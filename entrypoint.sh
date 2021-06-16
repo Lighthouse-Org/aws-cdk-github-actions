@@ -71,7 +71,10 @@ function runCdk(){
 	commentStatus="Failed"
 	if [ "${exitCode}" == "0" ]; then
 	  commentStatus="Success"
-  fi
+	elif [ "${exitCode}" != "0" ]; then
+		echo "CDK subcommand ${INPUT_CDK_SUBCOMMAND} for stack ${INPUT_CDK_STACK} has failed. See above console output for more details."
+		exit 1
+	fi
 
 	if [ "$GITHUB_EVENT_NAME" == "pull_request" ] && [ "${INPUT_ACTIONS_COMMENT}" == "true" ]; then
 		commentWrapper="#### \`cdk ${INPUT_CDK_SUBCOMMAND}\` ${commentStatus}
